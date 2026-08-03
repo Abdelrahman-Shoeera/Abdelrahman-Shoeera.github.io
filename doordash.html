@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DoorDasH — Case study — Abdelrahman Shoeera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <a class="mark" href="index.html" aria-label="Home">AS</a>
+      <div class="nav-links">
+        <a href="projects.html" aria-current="page">Projects</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <div class="page-head">
+      <h1>DoorDasH</h1>
+      <p class="sub">A competitive Java desktop board game set in the Monsters,&nbsp;Inc. universe, built on object-oriented class hierarchies and driven by CSV data.</p>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta-item"><p class="k">Type</p><p class="v">Java desktop game</p></div>
+      <div class="meta-item"><p class="k">Context</p><p class="v">University project (team)</p></div>
+      <div class="meta-item"><p class="k">Focus</p><p class="v">OOP design, data-driven build</p></div>
+      <div class="meta-item"><p class="k">Code</p><p class="v"><a href="https://github.com/Abdelrahman-Shoeera/DoorDash-game">GitHub repo</a></p></div>
+    </div>
+
+    <figure class="figure">
+      <img src="doordash-title.png" alt="DoorDasH title screen: Scare vs Laugh Touchdown, with Play as Scarer and Play as Laugher options">
+      <figcaption>Title screen. Two monsters race across the Floor — one Scarer, one Laugher — powered by energy collected from children.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>What it is</h2>
+      <p>DoorDasH is a two-player board game set in the world of Monsters,&nbsp;Inc., where the city runs on energy collected from children. Two monsters race across a numbered board of a hundred cells, battling through doors, traps, and wild card effects, each using their own powers to outlast the other. One player takes the Scarer side, the other the Laugher side.</p>
+
+      <h2>The design problem</h2>
+      <p>The interesting part of the build wasn't the UI — it was modeling a game with many <em>kinds</em> of things that share behavior but differ in the details. There are several types of monster, several types of card, and several types of board cell, and each type needs its own rules while still being handled uniformly by the game loop. That's a classic object-oriented modeling problem, and it drove the whole structure of the code.</p>
+
+      <h2>Architecture</h2>
+      <p>The domain is built on three class hierarchies, each using abstraction so the game engine can treat every variant through a shared interface:</p>
+      <ul>
+        <li><strong>Monsters</strong> &mdash; an abstract <code>Monster</code> base with four concrete subclasses, so each monster type carries its own powers while sharing common state (energy, position, role).</li>
+        <li><strong>Cards</strong> &mdash; an abstract <code>Card</code> base with five concrete subclasses, one per card behavior.</li>
+        <li><strong>Cells</strong> &mdash; a <code>Cell</code> hierarchy where <code>Cell</code> itself is concrete, with <code>TransportCell</code> as an abstract subclass that specialized moving-cell types extend.</li>
+      </ul>
+      <p>Using abstract bases here means the game loop never needs a giant switch statement over "what kind of thing is this" &mdash; each subclass knows how to behave, and the engine just calls the shared method.</p>
+
+      <h2>Data-driven design</h2>
+      <p>The game's content lives in CSV files rather than being hard-coded, so the board, monsters, and cards can change without touching the game logic. There are three CSV formats, each with a distinct row shape for its type; the cards file, for example, carries a <code>rarity</code> field that the others don't. Parsing each format into the right objects is what connects the data files to the class hierarchies above.</p>
+    </div>
+
+    <figure class="figure">
+      <img src="doordash-board.png" alt="DoorDasH gameplay board: a 100-cell grid with doors, cards, socks, belts, and named monster cells, plus player stat panels">
+      <figcaption>The playable board — a hundred cells of doors, cards, traps, and named monster spaces, with each player's live stats (energy, position, role, and status effects) tracked above and below.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2>A team build</h2>
+      <p>DoorDasH was built by a team of four, working through the design together rather than splitting it into separate territories &mdash; so I worked across the whole system, from the class hierarchies to the CSV parsing to the game loop. Building it collaboratively meant every design decision had to be one the whole team understood and agreed on, which is a large part of why the structure stayed consistent. It also made me a better team player: I learned to write code and make design choices that the rest of the team could pick up and build on, not just ones that made sense to me.</p>
+    </div>
+
+    <div class="prose">
+      <h2>The code</h2>
+      <p>The full source is on <a href="https://github.com/Abdelrahman-Shoeera/DoorDash-game">GitHub</a>.</p>
+    </div>
+
+    <footer class="footer">
+      <span>Abdelrahman Shoeera</span>
+      <div class="footer-links">
+        <a href="https://github.com/Abdelrahman-Shoeera">GitHub</a>
+        <a href="mailto:abdelrahman.shoiera@gmail.com">Email</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
