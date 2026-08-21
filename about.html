@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About — Abdelrahman Shoeera</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Abdelrahman Shoeera</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="wrap">
-
     <nav class="nav">
       <a class="mark" href="index.html" aria-label="Home">AS</a>
       <div class="nav-links">
@@ -21,17 +20,37 @@
       </div>
     </nav>
 
-    <div class="page-head">
-      <h1>About</h1>
-    </div>
+    <section class="terminal-section">
+      <p class="terminal-hint">This is an interactive terminal. Type a command and press Enter. Try <code>help</code>.</p>
 
-    <div class="about-grid">
-      <img src="headshot.jpeg" alt="Abdelrahman Shoeera">
-      <div class="bio">
-        <p>I'm a computer engineering student who builds backend and AI software. I care about writing code that holds up — clean structure, sensible design, and work I can explain end to end.</p>
-        <p>This site collects what I've built outside of coursework, with the code and the reasoning behind it, so the work speaks before I do.</p>
+      <div class="terminal" id="terminal" role="region" aria-label="Interactive terminal">
+        <div class="terminal-header">
+          <span class="terminal-dot dot-red"></span>
+          <span class="terminal-dot dot-yellow"></span>
+          <span class="terminal-dot dot-green"></span>
+          <span class="terminal-title">abdelrahman@portfolio: ~</span>
+        </div>
+
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line output" id="boot-message">Booting portfolio... connecting to backend...</div>
+        </div>
+
+        <div class="terminal-input-line">
+          <span class="terminal-prompt">abdelrahman@portfolio:~$</span>
+          <input
+            type="text"
+            id="terminal-input"
+            class="terminal-input"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-label="Terminal command input"
+          >
+          <span class="terminal-cursor">▊</span>
+        </div>
       </div>
-    </div>
+    </section>
 
     <footer class="footer">
       <span>Abdelrahman Shoeera</span>
@@ -40,7 +59,119 @@
         <a href="mailto:abdelrahman.shoiera@gmail.com">Email</a>
       </div>
     </footer>
-
   </div>
+
+  <script>
+    // ============================================================
+    // Config
+    // ============================================================
+    const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://127.0.0.1:8000"
+      : "https://portfolio-terminal-api-cu2y.onrender.com";
+
+    // ============================================================
+    // DOM references
+    // ============================================================
+    const terminalBody = document.getElementById("terminal-body");
+    const terminalInput = document.getElementById("terminal-input");
+    const bootMessage = document.getElementById("boot-message");
+    const terminal = document.getElementById("terminal");
+
+    // ============================================================
+    // Rendering helpers
+    // ============================================================
+    function appendLine(text, className) {
+      const line = document.createElement("div");
+      line.className = "terminal-line " + (className || "");
+      line.textContent = text;
+      terminalBody.appendChild(line);
+    }
+
+    function appendCommandEcho(command) {
+      const line = document.createElement("div");
+      line.className = "terminal-line echo";
+      line.innerHTML = '<span class="terminal-prompt">abdelrahman@portfolio:~$</span> ' +
+        escapeHtml(command);
+      terminalBody.appendChild(line);
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function scrollToBottom() {
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // ============================================================
+    // Command execution
+    // ============================================================
+    async function runCommand(command) {
+      const trimmed = command.trim();
+      if (trimmed === "") return;
+
+      appendCommandEcho(trimmed);
+
+      // Client-side commands (no backend call)
+      if (trimmed.toLowerCase() === "clear") {
+        terminalBody.innerHTML = "";
+        return;
+      }
+
+      try {
+        const response = await fetch(API_BASE + "/cmd/" + encodeURIComponent(trimmed));
+        const data = await response.json();
+
+        if (response.ok) {
+          appendLine(data.output, "output");
+        } else {
+          appendLine(data.detail || "error: unknown response", "error");
+        }
+      } catch (err) {
+        appendLine("error: could not reach backend. is the server awake?", "error");
+      }
+
+      scrollToBottom();
+    }
+
+    // ============================================================
+    // Input handling
+    // ============================================================
+    terminalInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const command = terminalInput.value;
+        terminalInput.value = "";
+        runCommand(command);
+      }
+    });
+
+    // Keep input focused when clicking anywhere in the terminal
+    terminal.addEventListener("click", function () {
+      terminalInput.focus();
+    });
+
+    // Focus input on page load
+    terminalInput.focus();
+
+    // ============================================================
+    // Boot sequence — auto-run 'help' on load
+    // ============================================================
+    (async function boot() {
+      try {
+        const response = await fetch(API_BASE + "/cmd/help");
+        const data = await response.json();
+        bootMessage.remove();
+        appendCommandEcho("help");
+        appendLine(data.output, "output");
+        scrollToBottom();
+      } catch (err) {
+        bootMessage.textContent = "backend unreachable. try typing a command anyway.";
+        bootMessage.className = "terminal-line error";
+      }
+    })();
+  </script>
 </body>
 </html>
