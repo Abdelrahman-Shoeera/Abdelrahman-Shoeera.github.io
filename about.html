@@ -12,7 +12,7 @@
 <body>
   <div class="wrap">
     <nav class="nav">
-      <a class="mark" href="index.html" aria-label="Home">AS</a>
+      <a class="mark" href="index.html" aria-label="Home" title="Home">←</a>
       <div class="nav-links">
         <a href="projects.html">Projects</a>
         <a href="about.html" aria-current="page">About</a>
@@ -20,37 +20,47 @@
       </div>
     </nav>
 
-    <section class="terminal-section">
-      <p class="terminal-hint">This is an interactive terminal. Type a command and press Enter. Try <code>help</code>.</p>
+    <section class="about-layout">
+  <div class="about-photo">
+    <img src="headshot.jpeg" alt="Abdelrahman Shoeera">
+  </div>
 
-      <div class="terminal" id="terminal" role="region" aria-label="Interactive terminal">
-        <div class="terminal-header">
-          <span class="terminal-dot dot-red"></span>
-          <span class="terminal-dot dot-yellow"></span>
-          <span class="terminal-dot dot-green"></span>
-          <span class="terminal-title">abdelrahman@portfolio: ~</span>
-        </div>
+  <div class="terminal-section">
+    <p class="terminal-hint">This is an interactive terminal. Type a command and press Enter. Try <code>help</code>.</p>
 
-        <div class="terminal-body" id="terminal-body">
-          <div class="terminal-line output" id="boot-message">Booting portfolio... connecting to backend...</div>
-        </div>
+    <div class="terminal" id="terminal" role="region" aria-label="Interactive terminal">
+      <div class="terminal-header">
+        <span class="terminal-dot dot-red"></span>
+        <span class="terminal-dot dot-yellow"></span>
+        <span class="terminal-dot dot-green"></span>
+        <span class="terminal-title">abdelrahman@portfolio: ~</span>
+      </div>
 
-        <div class="terminal-input-line">
-          <span class="terminal-prompt">abdelrahman@portfolio:~$</span>
-          <input
-            type="text"
-            id="terminal-input"
-            class="terminal-input"
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-            aria-label="Terminal command input"
-          >
-          <span class="terminal-cursor">▊</span>
+      <div class="terminal-body" id="terminal-body">
+        <div class="terminal-line output" id="boot-message">
+          Booting portfolio... connecting to backend...
         </div>
       </div>
-    </section>
+
+      <div class="terminal-input-line">
+        <span class="terminal-prompt">abdelrahman@portfolio:~$</span>
+
+        <input
+          type="text"
+          id="terminal-input"
+          class="terminal-input"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Terminal command input"
+        >
+
+        <span class="terminal-cursor">▊</span>
+      </div>
+    </div>
+  </div>
+</section>
 
     <footer class="footer">
       <span>Abdelrahman Shoeera</span>
