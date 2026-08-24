@@ -312,33 +312,12 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
     gap:22px;
   }
 
-  .about-photo{
-    position:static;
-  }
 
-  .about-photo img{
-    max-width:200px;
-  }
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
 }
-
-.about-layout{
-  position:relative;
-  padding-top:110px;
-}
-
-.about-photo{
-  position:absolute;
-  top:0;
-  left:0;
-  width:90px;
-  z-index:2;
-}
-
-.about-photo img{
-  width:90px;
-  height:90px;
-  object-fit:cover;
-  border-radius:50%;
-  border:1px solid var(--rule);
-  display:block;
+@keyframes blink {
+  50% { opacity: 0; }
 }
