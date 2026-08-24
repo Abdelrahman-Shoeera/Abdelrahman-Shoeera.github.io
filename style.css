@@ -311,6 +311,7 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
     grid-template-columns:1fr;
     gap:22px;
   }
+}
 
 
 .cursor {
