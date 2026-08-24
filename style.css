@@ -322,23 +322,23 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
 }
 
 .about-layout{
-  display:grid;
-  grid-template-columns:180px 1fr;
-  gap:36px;
-  align-items:start;
-  padding:40px 0;
+  position:relative;
+  padding-top:110px;
 }
 
 .about-photo{
-  position:sticky;
-  top:30px;
+  position:absolute;
+  top:0;
+  left:0;
+  width:90px;
+  z-index:2;
 }
 
 .about-photo img{
-  width:100%;
-  aspect-ratio:1 / 1;
+  width:90px;
+  height:90px;
   object-fit:cover;
-  border-radius:12px;
+  border-radius:50%;
   border:1px solid var(--rule);
   display:block;
 }
