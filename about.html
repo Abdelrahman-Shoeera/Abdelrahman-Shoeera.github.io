@@ -200,11 +200,11 @@
   let counter = null;
   const revealDelay = setTimeout(() => {
     bootMessage.style.display = "block";
-    bootMessage.textContent = "Booting portfolio... waking backend (usually 30–60s on first visit)...";
+    bootMessage.textContent = "Booting portfolio... waking backend (usually 30–40s on first visit)...";
     counter = setInterval(() => {
       seconds++;
       bootMessage.textContent =
-        "Booting portfolio... waking backend (" + seconds + "s, usually 30–60s on first visit)...";
+        "Booting portfolio... waking backend (" + seconds + "s, usually 30–40s on first visit)...";
     }, 1000);
   }, 300);
 
