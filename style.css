@@ -298,14 +298,10 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
   user-select: none;
 }
 
-@keyframes blink {
-  0%, 50%  { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
 /* Mobile */
 @media (max-width: 600px) {
   .terminal { font-size: 12px; }
+  .terminal-input { font-size: 16px; }   /* prevents iOS auto-zoom on focus */
   .terminal-title { display: none; }
   .about-layout{
     grid-template-columns:1fr;
