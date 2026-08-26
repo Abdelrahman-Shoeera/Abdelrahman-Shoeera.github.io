@@ -6,7 +6,7 @@ Patches every *.html file in the repo:
 """
 import re, sys, pathlib
 
-BASE_URL = "https://abdelrahman-shoeera.github.io"
+BASE_URL = "https://abdelrahman-shoeera.is-a.dev"
 OG_IMAGE = f"{BASE_URL}/og-image.png"
 GOATCOUNTER_CODE = "abdelrahman-shoeera"
 

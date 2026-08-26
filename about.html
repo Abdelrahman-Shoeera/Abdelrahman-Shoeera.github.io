@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css">
 <!-- BEGIN meta:auto -->
 <meta name="description" content="About Abdelrahman Shoeera — computer engineering student at GUC (New Cairo). Python, Java, PostgreSQL, FastAPI.">
-<link rel="canonical" href="https://abdelrahman-shoeera.github.io/about.html">
+<link rel="canonical" href="https://abdelrahman-shoeera.is-a.dev/about.html">
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -20,10 +20,10 @@
 <meta name="theme-color" content="#12141A">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://abdelrahman-shoeera.github.io/about.html">
+<meta property="og:url" content="https://abdelrahman-shoeera.is-a.dev/about.html">
 <meta property="og:title" content="About — Abdelrahman Shoeera">
 <meta property="og:description" content="About Abdelrahman Shoeera — computer engineering student at GUC (New Cairo). Python, Java, PostgreSQL, FastAPI.">
-<meta property="og:image" content="https://abdelrahman-shoeera.github.io/og-image.png">
+<meta property="og:image" content="https://abdelrahman-shoeera.is-a.dev/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Abdelrahman Shoeera">
@@ -31,7 +31,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="About — Abdelrahman Shoeera">
 <meta name="twitter:description" content="About Abdelrahman Shoeera — computer engineering student at GUC (New Cairo). Python, Java, PostgreSQL, FastAPI.">
-<meta name="twitter:image" content="https://abdelrahman-shoeera.github.io/og-image.png">
+<meta name="twitter:image" content="https://abdelrahman-shoeera.is-a.dev/og-image.png">
 
 <!-- analytics: GoatCounter -->
 <script data-goatcounter="https://abdelrahman-shoeera.goatcounter.com/count"
@@ -63,7 +63,7 @@
 
       <div class="terminal-body" id="terminal-body">
         <div class="terminal-line output" id="boot-message">
-          Booting portfolio... connecting to backend...
+           Booting portfolio... connecting to backend (usually 20–40s on first visit while the server wakes up)...
         </div>
       </div>
 
@@ -193,19 +193,29 @@
     // ============================================================
     // Boot sequence — auto-run 'help' on load
     // ============================================================
-    (async function boot() {
-      try {
-        const response = await fetch(API_BASE + "/cmd/help");
-        const data = await response.json();
-        bootMessage.remove();
-        appendCommandEcho("help");
-        appendLine(data.output, "output");
-        scrollToBottom();
-      } catch (err) {
-        bootMessage.textContent = "backend unreachable. try typing a command anyway.";
-        bootMessage.className = "terminal-line error";
-      }
-    })();
+   (async function boot() {
+  // live counter so the user knows something's happening
+  let seconds = 0;
+  const counter = setInterval(() => {
+    seconds++;
+    bootMessage.textContent =
+      "Booting portfolio... waking backend (" + seconds + "s, usually 30–60s on first visit)...";
+  }, 1000);
+
+  try {
+    const response = await fetch(API_BASE + "/cmd/help");
+    const data = await response.json();
+    clearInterval(counter);
+    bootMessage.remove();
+    appendCommandEcho("help");
+    appendLine(data.output, "output");
+    scrollToBottom();
+  } catch (err) {
+    clearInterval(counter);
+    bootMessage.textContent = "backend unreachable. try typing a command anyway.";
+    bootMessage.className = "terminal-line error";
+  }
+})();
   </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abdelrahman-shoeera.github.io/sitemap.xml
+Sitemap: https://abdelrahman-shoeera.is-a.dev/sitemap.xml
