@@ -302,12 +302,18 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
   user-select: none;
 }
 
+#boot-message {
+  display: none;
+  text-align: left;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
 /* Mobile */
 @media (max-width: 600px) {
   .terminal { font-size: 12px; }
   .terminal-input { font-size: 16px; }   /* prevents iOS auto-zoom on focus */
   .terminal-title { display: none; }
-   #boot-message { text-align: center; } 
   .about-layout{
     grid-template-columns:1fr;
     gap:22px;

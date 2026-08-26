@@ -194,28 +194,38 @@
     // Boot sequence — auto-run 'help' on load
     // ============================================================
    (async function boot() {
-  // live counter so the user knows something's happening
+  // Only show the boot message if the fetch takes >300ms.
+  // Fast responses never flash it.
   let seconds = 0;
-  const counter = setInterval(() => {
-    seconds++;
-    bootMessage.textContent =
-      "Booting portfolio... waking backend (" + seconds + "s, usually 30–60s on first visit)...";
-  }, 1000);
+  let counter = null;
+  const revealDelay = setTimeout(() => {
+    bootMessage.style.display = "block";
+    bootMessage.textContent = "Booting portfolio... waking backend (usually 30–60s on first visit)...";
+    counter = setInterval(() => {
+      seconds++;
+      bootMessage.textContent =
+        "Booting portfolio... waking backend (" + seconds + "s, usually 30–60s on first visit)...";
+    }, 1000);
+  }, 300);
 
   try {
     const response = await fetch(API_BASE + "/cmd/help");
     const data = await response.json();
-    clearInterval(counter);
+    clearTimeout(revealDelay);
+    if (counter) clearInterval(counter);
     bootMessage.remove();
     appendCommandEcho("help");
     appendLine(data.output, "output");
     scrollToBottom();
   } catch (err) {
-    clearInterval(counter);
+    clearTimeout(revealDelay);
+    if (counter) clearInterval(counter);
+    bootMessage.style.display = "block";
     bootMessage.textContent = "backend unreachable. try typing a command anyway.";
     bootMessage.className = "terminal-line error";
   }
 })();
+
   </script>
 </body>
 </html>
