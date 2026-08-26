@@ -199,7 +199,7 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
   font-size: 13px;
 }
 
-.terminal {
+terminal {
   background: #0d1117;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -208,8 +208,9 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
   font-size: 14px;
   line-height: 1.6;
   max-height: 600px;
-  overflow-y: auto;
   cursor: text;
+  display: flex;            
+  flex-direction: column;    
 }
 
 .terminal-header {
@@ -244,6 +245,9 @@ a:focus-visible,.mark:focus-visible{outline:2px solid var(--pine);outline-offset
 .terminal-body {
   padding: 16px;
   color: #c9d1d9;
+  flex: 1;                    
+  overflow-y: auto;           
+  min-height: 0;              
 }
 
 .terminal-line {
